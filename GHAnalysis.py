@@ -10,7 +10,7 @@ class Data:
         if reload == 1:
             self.__init(dict_address)
             try:
-                os.makedirs('json_test')
+                os.makedirs('json_test') #多进程无法对主程序文件进行更改，创建文件夹存储其余进程保存的文件
             except:
                 shutil.rmtree('json_test')
                 os.makedirs('json_test')
@@ -31,7 +31,7 @@ class Data:
         records = []
         pool = multiprocessing.Pool(processes = 6)
         for root, dic, files in os.walk(dict_address):
-            for f in files:     #多进程读取、解析文件，加快运行时间
+            for f in files:             #多进程读取、解析文件，加快运行时间
                 pool.apply_async(self.muti,args=(f,dict_address,json_list))
             pool.close()
             pool.join()
@@ -62,7 +62,7 @@ class Data:
         with open('3.json', 'w', encoding='utf-8') as f:
             json.dump(self.__4Events4PerPPerR,f)
 
-    def muti(self,f,dict_address,json_list):
+    def muti(self,f,dict_address,json_list):  #多进程运行的函数，用来读取、解析json文件
         if f[-5:] == '.json':
             json_path = f
             x = open(dict_address+'/'+json_path,'r', encoding='utf-8').read()
@@ -81,8 +81,7 @@ class Data:
     def __parseDict(self, d: dict, prefix: str):
         _d = {}
         for k in d.keys():
-            #设置键值限制，丢弃无用内容
-            if k == 'login' or k == 'actor' or k == 'repo' or k == 'type' or k == 'name':
+            if k == 'login' or k == 'actor' or k == 'repo' or k == 'type' or k == 'name': #设置键值限制，丢弃无用内容
                 if str(type(d[k]))[-6:-2] == 'dict':
                     _d.update(self.__parseDict(d[k], k))
                 else:

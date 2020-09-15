@@ -38,7 +38,7 @@ class Data:
             for root, dic, files in os.walk('json_test'):
                 for f in files:
                     x = open('json_test'+'/'+ f,'r', encoding='utf-8').read()
-                    records = json.loads(x)
+                    records = ujson.loads(x)
                     for i in records:
                         if not self.__4Events4PerP.get(i['actor__login'], 0):
                             self.__4Events4PerP.update({i['actor__login']: {}})
@@ -56,11 +56,11 @@ class Data:
                     records.clear()
 
         with open('1.json', 'w', encoding='utf-8') as f:
-            json.dump(self.__4Events4PerP,f)
+            ujson.dump(self.__4Events4PerP,f)
         with open('2.json', 'w', encoding='utf-8') as f:
-            json.dump(self.__4Events4PerR,f)
+            ujson.dump(self.__4Events4PerR,f)
         with open('3.json', 'w', encoding='utf-8') as f:
-            json.dump(self.__4Events4PerPPerR,f)
+            ujson.dump(self.__4Events4PerPPerR,f)
 
     def muti(self,f,dict_address,json_list):  #多进程运行的函数，用来读取、解析json文件
         if f[-5:] == '.json':
@@ -69,13 +69,13 @@ class Data:
             for _x in x.split('\n'):
                 if len(_x)>0:
                     try:
-                        json_list.append(json.loads(_x))
+                        json_list.append(ujson.loads(_x))
                     except:
                         pass
             records = []
             records = self.__listOfNestedDict2ListOfDict(json_list)
             with open('json_test'+'/'+f,'w+') as y:            
-                json.dump(records,y)
+                ujson.dump(records,y)
 
 
     def __parseDict(self, d: dict, prefix: str):

@@ -10,7 +10,7 @@ class Data:
         if reload == 1:
             self.__init(dict_address)
             try:
-                os.makedirs('json_test') #多进程无法对主程序文件进行更改，创建文件夹存储其余进程保存的文件
+                os.makedirs('json_test') #多进程无法对主程序字典进行更改，创建文件夹存储其余进程保存的文件
             except:
                 shutil.rmtree('json_test')
                 os.makedirs('json_test')
